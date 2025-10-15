@@ -22,7 +22,7 @@ class TestTextNode(unittest.TestCase):
     
     def test_eq_different_types(self):
         node1 =  TextNode("This is a text node", TextType.BOLD)
-        node2 =  TextNode("This is a text node", TextType.ITALLIC)
+        node2 =  TextNode("This is a text node", TextType.ITALIC)
         self.assertNotEqual(node1, node2)
     
     def test_eq_different_text(self):
