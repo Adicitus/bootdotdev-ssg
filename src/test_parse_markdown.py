@@ -25,7 +25,16 @@ class TestSplitNodes(unittest.TestCase):
             new_nodes
         )
 
-    def test_text_to_textnodes(self):
+    def test_text_to_textnodes_simple_paragraph(self):
+        t = "This is a simple paragraph"
+        nodes = text_to_textnodes(t)
+        self.assertIsInstance(nodes, list)
+        self.assertListEqual(
+            [TextNode(t, TextType.PLAIN)],
+            nodes
+        )
+
+    def test_text_to_textnodes_mixed_elements(self):
         t = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
         nodes = text_to_textnodes(t)
 

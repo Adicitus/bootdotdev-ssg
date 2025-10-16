@@ -40,6 +40,9 @@ def split_nodes(old_nodes:list) -> list:
                     new_nodes.append(TextNode(values['alt'], TextType.IMAGE, values['image_url']))
             
             last_index = end_index
+        
+        if last_index < len(node.text):
+            new_nodes.append(TextNode(node.text[last_index:len(node.text)], node.text_type, node.url))
 
     return new_nodes
 
