@@ -1,6 +1,6 @@
 import unittest
 from textnode import TextNode, TextType
-from split_nodes_delimiter import split_nodes_delimiter
+from parse_markdown import split_nodes_delimiter
 
 class TestSplitNodesDelimiter(unittest.TestCase):
     def test_indivisible(self):
