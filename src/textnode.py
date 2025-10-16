@@ -22,6 +22,6 @@ class TextNode:
         if self.url != None:
             return f"TextNode(\"{self.text}\", \"{self.text_type.value}\", \"{self.url}\")"
         else:
-             return f"TextNode(\"{self.text}\", \"{self.txt_type}\")"
+             return f"TextNode(\"{self.text}\", \"{self.text_type.value}\")"
    
 
