@@ -123,3 +123,31 @@ def split_nodes(old_nodes:list) -> list:
 def text_to_textnodes(text:str) -> list:
     node = TextNode(text, TextType.PLAIN)
     return split_nodes([node])
+
+def markdown_to_blocks(markdown_text):
+    blocks = []
+    block = []
+
+    for line in markdown_text.split("\n"):
+        print(line)
+        if re.match(r"^\s*$", line):
+            # This line is blank, implying that the previous block has ended.
+            if len(block) > 0:
+                blocks.append("\n".join(block))
+                block = []
+            continue
+        
+        if line.startswith("#"):
+            # This line is a heading, which is it's own block, implying that the previous block has ended.
+            if len(block) > 0:
+                blocks.append("\n".join(block))
+                block = []
+            blocks.append(line.strip())
+            continue
+        
+        # Add the line to our current block.
+        block.append(line.strip())
+    
+    if len(block) > 0:
+        blocks.append("\n".join(block))
+    return blocks
