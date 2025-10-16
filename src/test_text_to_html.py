@@ -2,7 +2,7 @@ import unittest
 import unittest
 
 from text_to_html import text_node_to_html_node
-from leafnode import LeafNode
+from htmlnode import LeafNode
 from textnode import TextNode, TextType
 
 

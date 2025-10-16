@@ -2,7 +2,7 @@ import unittest
 from textnode import TextNode, TextType
 from parse_markdown import split_nodes, text_to_textnodes, BlockType, markdown_to_blocks
 
-class TestSplitNodesDelimiter(unittest.TestCase):
+class TestSplitNodes(unittest.TestCase):
     
     def test_split_nodes(self):
         node = TextNode("This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)", TextType.PLAIN)
