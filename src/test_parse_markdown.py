@@ -1,6 +1,6 @@
 import unittest
 from textnode import TextNode, TextType
-from parse_markdown import split_nodes_delimiter, split_nodes_image, split_nodes_link, split_nodes, text_to_textnodes, markdown_to_blocks
+from parse_markdown import split_nodes_delimiter, split_nodes_image, split_nodes_link, split_nodes, text_to_textnodes, BlockType, markdown_to_blocks
 
 class TestSplitNodesDelimiter(unittest.TestCase):
     def test_indivisible(self):
@@ -140,12 +140,11 @@ class TestSplitNodes(unittest.TestCase):
         """
 
         blocks = markdown_to_blocks(t)
-        print(blocks)
         self.assertListEqual(
             [
-                "# This is a heading",
-                "This is a paragraph of text. It has some **bold** and _italic_ words inside of it.",
-                "- This is the first list item in a list block\n- This is a list item\n- This is another list item"
+                (BlockType.HEADING, "# This is a heading"),
+                (BlockType.PARAGRAPH, "This is a paragraph of text. It has some **bold** and _italic_ words inside of it."),
+                (BlockType.UNORDERED_LIST, "- This is the first list item in a list block\n- This is a list item\n- This is another list item")
             ],
             blocks
         )
