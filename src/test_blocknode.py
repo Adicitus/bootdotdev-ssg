@@ -49,9 +49,6 @@ class TestBlockNode(unittest.TestCase):
         t = "This is a _quote_.\nIt's about a **boat**."
         node = BlockNode(BlockType.QUOTE, t)
 
-        for textnode in node.textnodes:
-            print(textnode)
-
         self.assertIsInstance(node.textnodes, list)
         self.assertEqual(node.block_type, BlockType.QUOTE)
         self.assertListEqual(
@@ -124,7 +121,6 @@ class TestBlockNode(unittest.TestCase):
         
         node = BlockNode(BlockType.SECTION, t)
         node_html = node.to_html_node()
-        print(node_html)
         html = node_html.to_html()
         self.assertEqual(
             html.replace("\n", " "),
