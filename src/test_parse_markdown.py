@@ -1,6 +1,7 @@
 import unittest
 from textnode import TextNode, TextType
-from parse_markdown import split_nodes, text_to_textnodes, BlockType, markdown_to_blocks
+from blocknode import BlockNode, BlockType
+from parse_markdown import split_nodes, text_to_textnodes
 
 class TestSplitNodes(unittest.TestCase):
     
@@ -66,12 +67,12 @@ class TestSplitNodes(unittest.TestCase):
             - This is another list item
         """
 
-        blocks = markdown_to_blocks(t)
+        blocks = BlockNode.from_markdown(t)
         self.assertListEqual(
             [
-                (BlockType.HEADING, "# This is a heading"),
-                (BlockType.PARAGRAPH, "This is a paragraph of text. It has some **bold** and _italic_ words inside of it."),
-                (BlockType.UNORDERED_LIST, "- This is the first list item in a list block\n- This is a list item\n- This is another list item")
+                BlockNode(BlockType.HEADING, "# This is a heading"),
+                BlockNode(BlockType.PARAGRAPH, "This is a paragraph of text. It has some **bold** and _italic_ words inside of it."),
+                BlockNode(BlockType.UNORDERED_LIST, "- This is the first list item in a list block\n- This is a list item\n- This is another list item")
             ],
             blocks
         )
