@@ -1,6 +1,7 @@
 import unittest
 
 from textnode import TextNode, TextType
+from htmlnode import LeafNode
 
 class TestTextType(unittest.TestCase):
     def test_equivalence(self):
@@ -34,3 +35,46 @@ class TestTextNode(unittest.TestCase):
         node1 =  TextNode("This is a text node", TextType.BOLD, "http://localhost")
         node2 =  TextNode("This is a text node", TextType.BOLD)
         self.assertNotEqual(node1, node2)
+
+class TestTextToHTML(unittest.TestCase):
+    def test_plaintext(self):
+        text_node = TextNode("a", TextType.PLAIN)
+        html_node = text_node.to_html_node()
+        self.assertIsInstance(html_node, LeafNode)
+        self.assertEqual(html_node.tag, None)
+        self.assertEqual(html_node.to_html(), text_node.text)
+    
+    def test_bold(self):
+        text_node = TextNode("a", TextType.BOLD)
+        html_node = text_node.to_html_node()
+        self.assertIsInstance(html_node, LeafNode)
+        self.assertEqual(html_node.tag, "b")
+        self.assertEqual(html_node.to_html(), f"<b>a</b>")
+    
+    def test_italic(self):
+        text_node = TextNode("a", TextType.ITALIC)
+        html_node = text_node.to_html_node()
+        self.assertIsInstance(html_node, LeafNode)
+        self.assertEqual(html_node.tag, "i")
+        self.assertEqual(html_node.to_html(), f"<i>a</i>")
+    
+    def test_code(self):
+        text_node = TextNode("a", TextType.CODE)
+        html_node = text_node.to_html_node()
+        self.assertIsInstance(html_node, LeafNode)
+        self.assertEqual(html_node.tag, "code")
+        self.assertEqual(html_node.to_html(), f"<code>a</code>")
+    
+    def test_link(self):
+        text_node = TextNode("a", TextType.LINK, "b")
+        html_node = text_node.to_html_node()
+        self.assertIsInstance(html_node, LeafNode)
+        self.assertEqual(html_node.tag, "a")
+        self.assertEqual(html_node.to_html(), f"<a href=\"b\">a</a>")
+    
+    def test_bold(self):
+        text_node = TextNode("a", TextType.IMAGE, "b")
+        html_node = text_node.to_html_node()
+        self.assertIsInstance(html_node, LeafNode)
+        self.assertEqual(html_node.tag, "img")
+        self.assertEqual(html_node.to_html(), f"<img alt=\"a\" src=\"b\"></img>")
