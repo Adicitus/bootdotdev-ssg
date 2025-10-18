@@ -20,7 +20,7 @@ class HTMLNode:
         return "".join(attrs)
 
     def __repr__(self):
-        return f"HTMLNode({self.tag}, {self.value}, {self.children}, {self.props})"
+        return f"{type(self).__name__}(tag={self.tag}, value={self.value}, children={self.children}, props={self.props})"
     
 class LeafNode(HTMLNode):
     def __init__(self, tag, value, props=None):
@@ -47,5 +47,3 @@ class ParentNode(HTMLNode):
         child_string = "".join(child_strings)
 
         return f"<{self.tag}{self.props_to_html()}>{child_string}</{self.tag}>"
-
-
