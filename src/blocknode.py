@@ -1,7 +1,6 @@
 import re
 from enum import StrEnum
 from parse_markdown import text_to_textnodes
-from text_to_html import text_node_to_html_node
 from htmlnode import ParentNode, LeafNode
 
 class BlockType(StrEnum):
@@ -56,19 +55,14 @@ class BlockNode:
                 
     def to_html_node(self):
         def textnodes_to_html(nodes) -> list:
-            leafnodes = list(map(lambda n: text_node_to_html_node(n), nodes))
+            leafnodes = list(map(lambda n: n.to_html_node(), nodes))
             return leafnodes
-
-        print(self)
-        print(f"{self.block_type} == {BlockType.PARAGRAPH}: {self.block_type == BlockType.PARAGRAPH}")
 
         match self.block_type:
             case BlockType.SECTION:
                 child_nodes = []
-                print(self.child_blocks)
                 for child in self.child_blocks:
                     child_node = child.to_html_node()
-                    print(child_node)
                     child_nodes.append(child_node)
                 return ParentNode("div", child_nodes)
             case BlockType.PARAGRAPH:
@@ -119,9 +113,7 @@ class BlockNode:
                 state["blocktype"] = None
 
         for line in markdown_text.split("\n"):
-            # print(f"Pre trim: '{line}'")
             if state["blocktype"] != BlockType.CODE: line = line.strip()
-            # print(f"Post trim: '{line}'")
 
             if re.match(r"^\s*$", line):
                 # This line is blank, implying that the previous block has ended.
