@@ -50,8 +50,23 @@ def main(force_regen=False):
         copy_files(static_folder, public_folder)
         
         # Generate HTML
-        generate_page(os.path.join(content_folder, "index.md"), os.path.join(public_folder, "index.html"), os.path.join(project_folder, "template.html"))
-        pass
+        def generate_pages(src_root, dst_root, template_path):
+             for item in os.scandir(src_root):
+                if item.is_dir():
+                    new_src_path = os.path.join(src_root, item.name)
+                    new_dst_path = os.path.join(dst_root, item.name)
+                    print(f"Creating new directory: {new_dst_path}")
+                    os.mkdir(new_dst_path)
+                    generate_pages(new_src_path, new_dst_path, template_path)
+                else:
+                    if not item.name.endswith('.md'):
+                        continue
+                    src_path = os.path.join(src_root, item.name)
+                    dst_path = os.path.join(dst_root, item.name.replace(".md", ".html"))
+                    print(f"Generating HTML: {src_path} -> {dst_path}")
+                    generate_page(src_path, dst_path, template_path)
+
+        generate_pages(content_folder, public_folder, os.path.join(project_folder, "template.html"))
 
 
 if __name__ == "__main__":
