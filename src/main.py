@@ -1,6 +1,7 @@
 import sys
 import os
 import shutil
+from generate_page import generate_page
 
 from textnode import TextNode, TextType
 
@@ -15,10 +16,12 @@ def main(force_regen=False):
     project_folder  = os.path.abspath(os.path.join(src_folder, ".."))
     public_folder   = os.path.join(project_folder, "public")
     static_folder   = os.path.join(project_folder, "static")
+    content_folder   = os.path.join(project_folder, "content")
 
     print(f"{project_folder}: {os.path.exists(project_folder)}")
     print(f"{public_folder}: {os.path.exists(public_folder)}")
     print(f"{static_folder}: {os.path.exists(static_folder)}")
+    print(f"{content_folder}: {os.path.exists(static_folder)}")
 
     generate = not os.path.exists(public_folder) or (force_regen and os.path.isdir(public_folder))
 
@@ -45,7 +48,9 @@ def main(force_regen=False):
         os.mkdir(public_folder)
         print("Copying static files...")
         copy_files(static_folder, public_folder)
+        
         # Generate HTML
+        generate_page(os.path.join(content_folder, "index.md"), os.path.join(public_folder, "index.html"), os.path.join(project_folder, "template.html"))
         pass
 
 
