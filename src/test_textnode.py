@@ -35,6 +35,27 @@ class TestTextNode(unittest.TestCase):
         node1 =  TextNode("This is a text node", TextType.BOLD, "http://localhost")
         node2 =  TextNode("This is a text node", TextType.BOLD)
         self.assertNotEqual(node1, node2)
+    
+    def test_split_nodes(self):
+        node = TextNode("This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)", TextType.PLAIN)
+        new_nodes = node.split()
+
+        self.assertIsInstance(new_nodes, list)
+        self.assertListEqual(
+            [
+                TextNode("This is ", TextType.PLAIN),
+                TextNode("text", TextType.BOLD),
+                TextNode(" with an ", TextType.PLAIN),
+                TextNode("italic", TextType.ITALIC),
+                TextNode(" word and a ", TextType.PLAIN),
+                TextNode("code block", TextType.CODE),
+                TextNode(" and an ", TextType.PLAIN),
+                TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+                TextNode(" and a ", TextType.PLAIN),
+                TextNode("link", TextType.LINK, "https://boot.dev"),
+            ],
+            new_nodes
+        )
 
 class TestTextToHTML(unittest.TestCase):
     def test_plaintext(self):
