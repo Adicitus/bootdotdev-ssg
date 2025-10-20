@@ -30,7 +30,7 @@ class BlockNode:
                 self.textnodes = text_to_textnodes(match.group('title'))
 
             case BlockType.QUOTE:
-                t = "\n".join(map(lambda s: s.strip('>'), text.split("\n")))
+                t = "\n".join(map(lambda s: s.strip('> '), text.split("\n")))
                 self.textnodes = text_to_textnodes(t)
 
             case BlockType.CODE:
