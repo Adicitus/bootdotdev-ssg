@@ -62,6 +62,7 @@ class BlockNode:
             case BlockType.SECTION:
                 child_nodes = []
                 for child in self.child_blocks:
+                    if not isinstance(child, BlockNode): print(child)
                     child_node = child.to_html_node()
                     child_nodes.append(child_node)
                 return ParentNode("div", child_nodes)
@@ -77,13 +78,13 @@ class BlockNode:
             case BlockType.UNORDERED_LIST:
                 childnodes = []
                 for item in self.items:
-                    childnodes.append(ParentNode("li", textnodes_to_html(self.textnodes)))
+                    childnodes.append(ParentNode("li", textnodes_to_html(item[0])))
                 return ParentNode("ul", childnodes)
 
             case BlockType.ORDERED_LIST:
                 childnodes = []
                 for item in self.items:
-                    childnodes.append(ParentNode("li", textnodes_to_html(self.textnodes)))
+                    childnodes.append(ParentNode("li", textnodes_to_html(item[0])))
                 return ParentNode("ol", childnodes)
     
     def __eq__(self, other):
@@ -161,7 +162,7 @@ class BlockNode:
         
         # If the document doesn't end with a new line, we need to store the block we're currently building before returning the blocks.
         if len(state["block"]) > 0:
-            blocks.append("\n".join(state["block"]))
+            store_block()
         
         return blocks
 
