@@ -70,3 +70,17 @@ class TestParentNode(unittest.TestCase):
         node = ParentNode(*v)
 
         self.assertEqual(node.to_html(), f"<{node.tag}>{node.children[0].to_html()}</{node.tag}>")
+    
+    def test_find_tag(self):
+        child_node1 = LeafNode("h1", "child1")
+        child_node2 = LeafNode("p", "child2")
+        child_node3 = LeafNode("p", "child3")
+        parent_node = ParentNode("parent", [child_node1, child_node2, child_node3])
+        grandparent_node = ParentNode("parent", [parent_node])
+
+        
+        self.assertListEqual(parent_node.find_tag("h1"), [child_node1])
+        self.assertListEqual(parent_node.find_tag("p"), [child_node2, child_node3])
+        self.assertListEqual(parent_node.find_tag("p", 1), [child_node2])
+        self.assertListEqual(grandparent_node.find_tag("parent"), [grandparent_node, parent_node])
+        self.assertListEqual(grandparent_node.find_tag("parent", 1), [grandparent_node])

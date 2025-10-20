@@ -37,6 +37,27 @@ class ParentNode(HTMLNode):
     def __init__(self, tag, children, props=None):
         super().__init__(tag=tag, value=None, children=children, props=props)
 
+    def find_tag(self, tag:str, limit=-1, nodes_found=None):
+
+        # Workaround because python keeps using the same list object if [] is specified as the default value:
+        if nodes_found == None: nodes_found = []
+
+        if self.tag == tag:
+            nodes_found.append(self)
+
+        for child in self.children:
+            if limit > 0 and limit <= len(nodes_found):
+                return nodes_found
+
+            if isinstance(child, ParentNode):
+                child.find_tag(tag, limit, nodes_found)
+                continue
+            
+            if child.tag == tag:
+                nodes_found.append(child)
+        
+        return nodes_found
+
     def to_html(self):
         if self.tag == None: raise ValueError("parent nodes must have a tag name")
         if self.children == None: raise ValueError("parent nodes must have child nodes")
