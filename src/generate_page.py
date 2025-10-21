@@ -3,8 +3,9 @@ import os
 from blocknode import BlockNode, BlockType
 
 
-def generate_page(src_path, dst_path, template_path):
+def generate_page(src_path, dst_path, template_path, basepath=None):
     print(f"Generating page from '{src_path}' to '{dst_path}' using '{template_path}'")
+    print(f"Using basepath: {basepath}")
 
     src_text = None
     try:
@@ -26,6 +27,9 @@ def generate_page(src_path, dst_path, template_path):
     title = title_node[0].children[0].value if len(title_node) > 0 else "Unknown title"
 
     page_content = template_text.replace("{{ Title }}", title).replace("{{ Content }}", html_node.to_html())
+
+    if basepath != None:
+        page_content = page_content.replace('href="/', f"href=\"{basepath}").replace('src="/', f"src=\"{basepath}")
 
     try:
         with open(dst_path, 'w') as f: f.write(page_content)

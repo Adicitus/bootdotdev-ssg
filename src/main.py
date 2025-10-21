@@ -5,7 +5,7 @@ from generate_page import generate_page
 
 from textnode import TextNode, TextType
 
-def main(force_regen=False):
+def main(basepath="/", force_regen=False):
     node = TextNode(
         "This is some anchor text",
         TextType.LINK,
@@ -14,7 +14,7 @@ def main(force_regen=False):
 
     src_folder = os.path.dirname(__file__)
     project_folder  = os.path.abspath(os.path.join(src_folder, ".."))
-    public_folder   = os.path.join(project_folder, "public")
+    public_folder   = os.path.join(project_folder, "public", basepath.strip("/"))
     static_folder   = os.path.join(project_folder, "static")
     content_folder   = os.path.join(project_folder, "content")
 
@@ -26,7 +26,7 @@ def main(force_regen=False):
     generate = not os.path.exists(public_folder) or (force_regen and os.path.isdir(public_folder))
 
     if generate and os.path.exists(public_folder):
-        print(f"Removing existing public folder: {projec_folder}")
+        print(f"Removing existing public folder: {public_folder}")
         shutil.rmtree(public_folder)
 
     if generate:
@@ -50,7 +50,7 @@ def main(force_regen=False):
         copy_files(static_folder, public_folder)
         
         # Generate HTML
-        def generate_pages(src_root, dst_root, template_path):
+        def generate_pages(src_root, dst_root, template_path, basepath="/"):
              for item in os.scandir(src_root):
                 if item.is_dir():
                     new_src_path = os.path.join(src_root, item.name)
@@ -64,14 +64,19 @@ def main(force_regen=False):
                     src_path = os.path.join(src_root, item.name)
                     dst_path = os.path.join(dst_root, item.name.replace(".md", ".html"))
                     print(f"Generating HTML: {src_path} -> {dst_path}")
-                    generate_page(src_path, dst_path, template_path)
+                    generate_page(src_path, dst_path, template_path, basepath)
 
-        generate_pages(content_folder, public_folder, os.path.join(project_folder, "template.html"))
+        generate_pages(content_folder, public_folder, os.path.join(project_folder, "template.html"), basepath)
 
 
 if __name__ == "__main__":
     print(sys.argv)
+    basepath = "/"
+    if len(sys.argv) > 1 and not sys.argv[1].startswith("-"):
+        basepath = sys.argv[1]
+    
+    print(f"Using basepath: {basepath}")
     regenerate = "-f" in sys.argv or "--force" in sys.argv
     print(regenerate)
-    main(force_regen=regenerate)
+    main(basepath, force_regen=regenerate)
 
