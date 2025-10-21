@@ -14,7 +14,7 @@ def main(basepath="/", force_regen=False):
 
     src_folder = os.path.dirname(__file__)
     project_folder  = os.path.abspath(os.path.join(src_folder, ".."))
-    public_folder   = os.path.join(project_folder, "public", basepath.strip("/"))
+    public_folder   = os.path.join(project_folder, "docs", basepath.strip("/"))
     static_folder   = os.path.join(project_folder, "static")
     content_folder   = os.path.join(project_folder, "content")
 
