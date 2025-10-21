@@ -45,7 +45,7 @@ def main(basepath="/", force_regen=False):
                     print(f"Copying: {src_path} -> {dst_path}")
                     shutil.copy(src_path, dst_path)
         print(f"Creating public folder ({public_folder})")
-        os.mkdir(public_folder)
+        os.makedirs(public_folder)
         print("Copying static files...")
         copy_files(static_folder, public_folder)
         
